@@ -1783,11 +1783,15 @@ class Trainer:
         machines) main process.
         """
         if is_torch_tpu_available():
-            return xm.is_master_ordinal(local=True)
+            print(1, xm.is_master_ordinal(local=True))                        
+            #return xm.is_master_ordinal(local=True)
         elif is_sagemaker_mp_enabled():
-            return smp.local_rank() == 0
+            print(2, smp.local_rank() == 0)                       
+            #return smp.local_rank() == 0
         else:
-            return self.args.local_rank in [-1, 0]
+            print(3, self.args.local_rank in [-1, 0])                                      
+            #return self.args.local_rank in [-1, 0]
+        return True
 
     def is_world_process_zero(self) -> bool:
         """
