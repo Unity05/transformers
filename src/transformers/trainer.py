@@ -1801,12 +1801,18 @@ class Trainer:
         Whether or not this process is the global main process (when training in a distributed fashion on several
         machines, this is only going to be :obj:`True` for one process).
         """
+                            
         if is_torch_tpu_available():
-            return xm.is_master_ordinal(local=False)
+            print("ISWPZ", 1, xm.is_master_ordinal(local=False))                            
+            #return xm.is_master_ordinal(local=False)
         elif is_sagemaker_mp_enabled():
-            return smp.rank() == 0
+            print("ISWPZ", 2, smp.rank() == 0)
+            #return smp.rank() == 0
         else:
-            return self.args.process_index == 0
+            #return self.args.process_index == 0
+            print("ISWPZ", 3, self.args.process_index == 0)                            
+        return True                    
+                          
 
     def save_model(self, output_dir: Optional[str] = None):
         """
