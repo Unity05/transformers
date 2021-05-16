@@ -1496,7 +1496,9 @@ class Trainer:
                     reissue_pt_warnings(caught_warnings)
                     if self.use_amp:
                         torch.save(self.scaler.state_dict(), os.path.join(output_dir, "scaler.pt"))
-        elif self.is_world_process_zero() and not self.deepspeed:
+        # elif self.is_world_process_zero() and not self.deepspeed:
+        print('is_world_process_zero: {} | self.deepspeed: {}'.format(self.is_world_process_zero(), self.deepspeed)
+        if True:
             print(12, "CP")                                                        
             # deepspeed.save_checkpoint above saves model/optim/sched
             torch.save(self.optimizer.state_dict(), os.path.join(output_dir, "optimizer.pt"))
