@@ -1468,12 +1468,14 @@ class Trainer:
         output_dir = os.path.join(run_dir, checkpoint_folder)
         self.save_model(output_dir)
         if self.deepspeed:
+            print(11, "CP")                            
             # under zero3 model file itself doesn't get saved since it's bogus! Unless deepspeed
             # config `stage3_gather_fp16_weights_on_model_save` is True
             self.deepspeed.save_checkpoint(output_dir)
 
         # Save optimizer and scheduler
         if self.sharded_ddp == ShardedDDPOption.SIMPLE:
+            print(12, "CP")                            
             self.optimizer.consolidate_state_dict()
 
         if is_torch_tpu_available():
@@ -1495,6 +1497,7 @@ class Trainer:
                     if self.use_amp:
                         torch.save(self.scaler.state_dict(), os.path.join(output_dir, "scaler.pt"))
         elif self.is_world_process_zero() and not self.deepspeed:
+            print(12, "CP")                                                        
             # deepspeed.save_checkpoint above saves model/optim/sched
             torch.save(self.optimizer.state_dict(), os.path.join(output_dir, "optimizer.pt"))
             with warnings.catch_warnings(record=True) as caught_warnings:
